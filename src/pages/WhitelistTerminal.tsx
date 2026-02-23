@@ -44,8 +44,31 @@ export default function WhitelistTerminal() {
         }, 4000);
     };
 
-    const handleInputSubmit = (e: React.FormEvent) => {
+    // Updated to handle specific validations per task
+    const handleInputSubmit = (e: React.FormEvent, taskNum: number) => {
         e.preventDefault();
+
+        // VALIDATION: Task 1 (X Handle)
+        if (taskNum === 1) {
+            const handleRegex = /^@[A-Za-z0-9_]{1,15}$/;
+            if (!handleRegex.test(formData.xHandle)) {
+                toast.error("INVALID FORMAT: Handle must be 1-15 characters.");
+                return;
+            }
+        }
+
+        // VALIDATION: Task 3 & 4 (X Status Links)
+        if (taskNum === 3 || taskNum === 4) {
+            const linkRegex = /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+\/status\/[0-9]+/;
+            const targetLink = taskNum === 3 ? formData.commentLink : formData.quoteLink;
+            
+            if (!linkRegex.test(targetLink)) {
+                toast.error("INVALID LINK: Must be a direct URL to an X post/reply.");
+                return;
+            }
+        }
+
+        // If validation passes, proceed
         setTaskState('completed');
         setTimeout(() => {
             setActiveTask(prev => prev + 1);
@@ -55,6 +78,13 @@ export default function WhitelistTerminal() {
 
     const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // VALIDATION: Task 5 (EVM Wallet)
+        const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+        if (!evmRegex.test(formData.evmWallet)) {
+            toast.error("INVALID HARDWARE: Must be a valid 42-character EVM address.");
+            return;
+        }
 
         const loadingToast = toast.loading("INJECTING DATA INTO MAINFRAME...");
 
@@ -80,7 +110,7 @@ export default function WhitelistTerminal() {
     const copyReferral = () => {
         const link = `${window.location.origin}/?ref=${formData.xHandle.replace('@', '')}`;
         navigator.clipboard.writeText(link);
-        toast("REFERRAL LINK COPIED TO CLIPBOARD",);
+        toast("REFERRAL LINK COPIED TO CLIPBOARD");
     };
 
     const getWrapperClass = (taskNum: number, isCyan = false) => {
@@ -135,9 +165,9 @@ export default function WhitelistTerminal() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto mt-20 sm:mt-20 px-4 pb-20">
+        <div className="max-w-3xl mx-auto mt-30 sm:mt-20 px-2 pb-20">
             <div className="mb-8 sm:mb-12">
-                <h1 className="text-4xl sm:text-5xl font-black tracking-tighter uppercase mb-2 text-cyber-white">
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter uppercase mb-2 text-cyber-white">
                     Whitelist Terminal
                 </h1>
                 <p className="text-cyber-white border-l-4 border-cyber-red pl-4 py-1 text-sm sm:text-base">
@@ -166,8 +196,20 @@ export default function WhitelistTerminal() {
                             </div>
                         )}
                         {activeTask === 1 && taskState === 'input' && (
-                            <form onSubmit={handleInputSubmit} className="flex flex-col sm:flex-row gap-4">
-                                <input required type="text" placeholder="@megakitaro" onChange={(e) => setFormData({ ...formData, xHandle: e.target.value })} className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" />
+                            <form onSubmit={(e) => handleInputSubmit(e, 1)} className="flex flex-col sm:flex-row gap-4">
+                                <input 
+                                    required 
+                                    type="text" 
+                                    placeholder="@megakitaro" 
+                                    value={formData.xHandle}
+                                    onChange={(e) => {
+                                        // Auto-inject @ if user forgets it
+                                        let val = e.target.value;
+                                        if (val && !val.startsWith('@')) val = '@' + val;
+                                        setFormData({ ...formData, xHandle: val.trim() });
+                                    }} 
+                                    className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" 
+                                />
                                 <button type="submit" className="cursor-pointer w-full sm:w-auto bg-cyber-red text-cyber-white font-bold px-8 py-3 hover:bg-cyber-white hover:text-cyber-black transition-colors">VERIFY</button>
                             </form>
                         )}
@@ -216,8 +258,15 @@ export default function WhitelistTerminal() {
                             </div>
                         )}
                         {activeTask === 3 && taskState === 'input' && (
-                            <form onSubmit={handleInputSubmit} className="flex flex-col sm:flex-row gap-4">
-                                <input required type="url" placeholder="Paste comment URL" onChange={(e) => setFormData({ ...formData, commentLink: e.target.value })} className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" />
+                            <form onSubmit={(e) => handleInputSubmit(e, 3)} className="flex flex-col sm:flex-row gap-4">
+                                <input 
+                                    required 
+                                    type="url" 
+                                    placeholder="Paste comment URL" 
+                                    value={formData.commentLink}
+                                    onChange={(e) => setFormData({ ...formData, commentLink: e.target.value.trim() })} 
+                                    className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" 
+                                />
                                 <button type="submit" className="cursor-pointer w-full sm:w-auto bg-cyber-red text-cyber-white font-bold px-8 py-3 hover:bg-cyber-white hover:text-cyber-black transition-colors">VERIFY</button>
                             </form>
                         )}
@@ -244,8 +293,15 @@ export default function WhitelistTerminal() {
                             </div>
                         )}
                         {activeTask === 4 && taskState === 'input' && (
-                            <form onSubmit={handleInputSubmit} className="flex flex-col sm:flex-row gap-4">
-                                <input required type="url" placeholder="Paste quote URL" onChange={(e) => setFormData({ ...formData, quoteLink: e.target.value })} className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" />
+                            <form onSubmit={(e) => handleInputSubmit(e, 4)} className="flex flex-col sm:flex-row gap-4">
+                                <input 
+                                    required 
+                                    type="url" 
+                                    placeholder="Paste quote URL" 
+                                    value={formData.quoteLink}
+                                    onChange={(e) => setFormData({ ...formData, quoteLink: e.target.value.trim() })} 
+                                    className="bg-cyber-black border-2 border-cyber-gray p-3 text-cyber-white outline-none focus:border-cyber-red w-full" 
+                                />
                                 <button type="submit" className="cursor-pointer w-full sm:w-auto bg-cyber-red text-cyber-white font-bold px-8 py-3 hover:bg-cyber-white hover:text-cyber-black transition-colors">VERIFY</button>
                             </form>
                         )}
@@ -262,9 +318,16 @@ export default function WhitelistTerminal() {
 
                         {activeTask === 5 && (
                             <form onSubmit={handleFinalSubmit} className="flex flex-col gap-4">
-                                <input required type="text" placeholder="0x..." onChange={(e) => setFormData({ ...formData, evmWallet: e.target.value })} className="bg-cyber-black border-2 border-cyber-gray p-4 text-cyber-white outline-none focus:border-cyber-cyan w-full font-mono text-base sm:text-lg" />
+                                <input 
+                                    required 
+                                    type="text" 
+                                    placeholder="0x..." 
+                                    value={formData.evmWallet}
+                                    onChange={(e) => setFormData({ ...formData, evmWallet: e.target.value.trim() })} 
+                                    className="bg-cyber-black border-2 border-cyber-gray p-4 text-cyber-white outline-none focus:border-cyber-cyan w-full font-mono text-base sm:text-lg" 
+                                />
                                 <button type="submit" className="cursor-pointer bg-cyber-white text-cyber-black font-black text-lg sm:text-xl px-8 py-4 uppercase tracking-widest hover:bg-cyber-cyan transition-colors">
-                                    [ SUBMIT DOSSIER ]
+                                    [ SUBMIT ]
                                 </button>
                             </form>
                         )}
