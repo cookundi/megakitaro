@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Trophy, ShieldAlert } from 'lucide-react';
+import {  Trophy, ShieldAlert } from 'lucide-react';
 
 // Mock data for development
 const MOCK_DATA = [

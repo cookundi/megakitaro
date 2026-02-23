@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Terminal } from 'lucide-react';
 
 export default function Navbar() {
   const location = useLocation();
