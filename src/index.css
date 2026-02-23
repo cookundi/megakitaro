@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  /* High contrast, flat brutalist palette */
+  --color-cyber-black: #0d0d0d; 
+  --color-cyber-dark: #151515;  
+  --color-cyber-red: #eb0505;   
+  --color-cyber-cyan: #5b01f5;  
+  --color-cyber-white: #eeeeee; 
+  --color-cyber-gray: #f7f7f7;  
+
+  /* Typography */
+  --font-mono: "JetBrains Mono", "Space Mono", monospace;
+  --font-sans: "Inter", sans-serif;
+}
+
+@layer utilities {
+  /* --- MOVING BORDER ANIMATIONS (Unchanged) --- */
+  .animated-border-red, .animated-border-cyan {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-cyber-black);
+    /* background:  #f7f7f7; */
+  }
+  
+  .animated-border-red::before, .animated-border-cyan::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    animation: spin 3s linear infinite;
+    z-index: 0;
+  }
+  
+  .animated-border-red::before {
+    background: conic-gradient(from 0deg, transparent 75%, var(--color-cyber-red) 100%);
+  }
+  
+  .animated-border-cyan::before {
+    background: conic-gradient(from 0deg, transparent 75%, var(--color-cyber-cyan) 100%);
+  }
+
+  /* --- NEW: FIERCE DIGITAL GLITCH ANIMATION --- */
+  @keyframes fierce-glitch {
+    /* Most of the time it's stable, slightly darkened */
+    0%, 90%, 100% { 
+      transform: translate(0, 0) scale(1.02); 
+      /* scale(1.02) ensures edges don't show during jitters */
+      filter: brightness(0.7) contrast(1.2) saturate(1.1); 
+    }
+    /* Quick, sharp shock - Bright flash and color shift */
+    92% { 
+      transform: translate(-4px, 0) scale(1.02) skewX(3deg); 
+      filter: brightness(1.4) contrast(1.8) saturate(1.5) hue-rotate(-45deg); 
+    }
+    /* Immediate snap back - Dark crush and opposite skew */
+    94% { 
+      transform: translate(4px, 0) scale(1.02) skewX(-3deg); 
+      filter: brightness(0.5) contrast(2.0) saturate(0.5); 
+    }
+    /* A final little jitter before resetting */
+    96% {
+       transform: translate(-1px, 1px) scale(1.02);
+       filter: brightness(0.8);
+    }
+  }
+
+  .bg-collage-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    /* Added a scanline overlay texture on top of the image 
+       to give it that CRT vibe from your example GIF.
+    */
+    background-image: 
+      linear-gradient(transparent 50%, rgba(0, 0, 0, 0.6) 50%), /* Scanline layer */
+      url('/collage.jpg'); /* Your art layer */
+    background-size: 3px 3px, cover; /* Tiny size for scanlines, cover for art */
+    background-position: center;
+    pointer-events: none;
+    
+    /* Super fast 0.5s loop for nervous energy */
+    animation: fierce-glitch 0.5s infinite linear; 
+  }
+
+  .bg-overlay {
+    position: fixed;
+    inset: 0;
+    /* Adjusted opacity to balance readability vs visibility of the fierce glitch */
+    background-color: rgba(4, 27, 102, 0.55); 
+    z-index: -1;
+    pointer-events: none;
+  }
+
+}
+
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-cyber-black);
+    color: var(--color-cyber-white);
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; /* Prevents scrollbars during glitch jitters */
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background-color: var(--color-cyber-dark); }
+  ::-webkit-scrollbar-thumb { background-color: var(--color-cyber-gray); }
+}
