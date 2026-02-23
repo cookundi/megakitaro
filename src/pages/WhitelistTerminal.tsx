@@ -145,7 +145,7 @@ export default function WhitelistTerminal() {
 
     if (isSubmitted) {
         return (
-            <div className="max-w-2xl mx-auto mt-12 sm:mt-20 px-4">
+            <div className="max-w-2xl mx-auto mt-30 sm:mt-20 px-4">
                 <div className="animated-border-cyan text-center">
                     <div className="relative z-10 bg-cyber-dark m-[2px] p-6 sm:p-8 h-[calc(100%-4px)]">
                         <h2 className="text-2xl sm:text-3xl font-black mb-4 text-cyber-white uppercase">PROTOCOL COMPLETE</h2>
