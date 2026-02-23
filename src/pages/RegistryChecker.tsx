@@ -32,7 +32,7 @@ export default function RegistryChecker() {
           // Condense the EVM wallet to look like '0x1234...abcd' to fit cleanly
           wallet: user.evm_wallet ? `${user.evm_wallet.slice(0, 6)}...${user.evm_wallet.slice(-4)}` : 'UNKNOWN',
           refs: user.referrals || 0,
-          status: 'VERIFIED'
+          status: 'PENDING'
         }));
         
         setRegistryData(formattedData);
@@ -130,7 +130,7 @@ export default function RegistryChecker() {
                     <td className="p-4 text-cyber-gray font-mono">{user.wallet}</td>
                     <td className="p-4 text-center sm:text-xl text-cyber-gray">{user.refs}</td>
                     <td className="p-4 text-right">
-                      <span className="inline-block border border-cyber-cyan text-cyber-gray text-xs px-2 py-1 tracking-widest bg-cyber-cyan/10">
+                      <span className="inline-block border border-[#DFAB2F] text-[#DFAB2F] text-xs px-2 py-1 tracking-widest bg-yellow/10">
                         {user.status}
                       </span>
                     </td>

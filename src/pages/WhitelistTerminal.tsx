@@ -36,6 +36,12 @@ export default function WhitelistTerminal() {
                 setTaskState('input');
             } else {
                 setTaskState('completed');
+                
+                // TOAST: Task 2 auto-completes here
+                if (activeTask === 2) {
+                    toast.success("TASK 02 VERIFIED: BROADCAST AMPLIFIED.");
+                }
+
                 setTimeout(() => {
                     setActiveTask(prev => prev + 1);
                     setTaskState('idle');
@@ -55,6 +61,7 @@ export default function WhitelistTerminal() {
                 toast.error("INVALID FORMAT: Handle must be 1-15 characters.");
                 return;
             }
+            toast.success("TASK 01 VERIFIED: COMM LINK SECURED.");
         }
 
         // VALIDATION: Task 3 & 4 (X Status Links)
@@ -66,6 +73,9 @@ export default function WhitelistTerminal() {
                 toast.error("INVALID LINK: Must be a direct URL to an X post/reply.");
                 return;
             }
+
+            if (taskNum === 3) toast.success("TASK 03 VERIFIED: OPERATIVES LOGGED.");
+            if (taskNum === 4) toast.success("TASK 04 VERIFIED: ALLEGIANCE DECLARED.");
         }
 
         // If validation passes, proceed
@@ -143,6 +153,7 @@ export default function WhitelistTerminal() {
 
                         <div className="bg-cyber-black border-2 border-cyber-gray/50 p-4 sm:p-6 text-left">
                             <p className="text-xs text-cyber-white mb-2 uppercase tracking-widest font-bold">Your Operative Link</p>
+                            <p className='text-xs text-cyber-gray mb-2'>Top Recruiters have the best shot at a GTD spot.</p>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <input
                                     type="text"
@@ -203,7 +214,6 @@ export default function WhitelistTerminal() {
                                     placeholder="@megakitaro" 
                                     value={formData.xHandle}
                                     onChange={(e) => {
-                                        // Auto-inject @ if user forgets it
                                         let val = e.target.value;
                                         if (val && !val.startsWith('@')) val = '@' + val;
                                         setFormData({ ...formData, xHandle: val.trim() });
