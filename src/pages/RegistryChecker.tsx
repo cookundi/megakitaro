@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trophy, ShieldAlert, Loader2 } from 'lucide-react';
+import { ShieldAlert, Loader2 } from 'lucide-react';
 
 // Define the shape of our data
 interface Operative {
