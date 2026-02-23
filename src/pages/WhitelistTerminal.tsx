@@ -236,7 +236,7 @@ export default function WhitelistTerminal() {
                         <p className="text-xs sm:text-sm text-cyber-white mb-6">Like and Repost the primary broadcast.</p>
 
                         {activeTask === 2 && taskState === 'idle' && (
-                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2023794261649752549?s=46', false)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
+                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2025958435796521357', false)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
                                 EXECUTE_AMPLIFY
                             </button>
                         )}
@@ -258,7 +258,7 @@ export default function WhitelistTerminal() {
                         <p className="text-xs sm:text-sm text-cyber-white mb-6">Tag 2 allies in the broadcast comments.</p>
 
                         {activeTask === 3 && taskState === 'idle' && (
-                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2023794261649752549?s=46', true)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
+                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2025958435796521357', true)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
                                 EXECUTE_COMMENT
                             </button>
                         )}
@@ -293,7 +293,7 @@ export default function WhitelistTerminal() {
                         <p className="text-xs sm:text-sm text-cyber-white mb-6">Quote the broadcast with: "MegaKitaro On Top".</p>
 
                         {activeTask === 4 && taskState === 'idle' && (
-                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2023794261649752549?s=46', true)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
+                            <button onClick={() => handleTaskAction('https://x.com/megakitaro/status/2025958435796521357', true)} className="w-full cursor-pointer sm:w-auto bg-cyber-white text-cyber-black font-bold px-6 py-3 hover:bg-cyber-red hover:text-white transition-colors">
                                 EXECUTE_QUOTE
                             </button>
                         )}
